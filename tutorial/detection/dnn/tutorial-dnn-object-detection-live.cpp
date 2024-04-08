@@ -78,7 +78,7 @@ int main(int argc, const char *argv[])
     std::string opt_dnn_label_file = "";
     vpDetectorDNNOpenCV::DNNResultsParsingType opt_dnn_type = vpDetectorDNNOpenCV::RESNET_10;
     //! [OpenCV DNN face detector]
-    int opt_dnn_width = 300, opt_dnn_height = 300;
+    int opt_dnn_width = 640, opt_dnn_height = 480;
     double opt_dnn_meanR = 104.0, opt_dnn_meanG = 177.0, opt_dnn_meanB = 123.0;
     double opt_dnn_scale_factor = 1.0;
     bool opt_dnn_swapRB = false;

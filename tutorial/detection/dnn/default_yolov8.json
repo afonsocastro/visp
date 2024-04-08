@@ -91,7 +91,7 @@
             0.0,
             0.0
         ],
-        "modelFile": "/home/rlagneau/react_ws/dnns/yolov8/weights/yolov8s.onnx",
+        "modelFile": "models/yolov8s.onnx",
         "nmsThreshold": 0.5,
         "parsingType": "yolov8",
         "resolution": [

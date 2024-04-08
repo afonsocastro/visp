@@ -32,7 +32,7 @@ endforeach()
 
 # Copy the data files to the same location than the target
 foreach(data ${tutorial_data})
-  visp_copy_data(tutorial-dnn-object-detection-live.cpp ${data})
+  visp_copy_data(tutorial-dnn-object-detection-live.cpp ${data} models)
 endforeach()
 
 if(USE_TENSORT)

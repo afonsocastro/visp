@@ -194,7 +194,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(DetectionMethod, {
 
 int main(int argc, const char *argv[])
 {
-  unsigned width = 640, height = 480;
+  unsigned width = 1280, height = 720;
   vpCameraParameters cam;
   std::string videoDevice = "0";
   std::string megaposeAddress = "127.0.0.1";
@@ -206,8 +206,8 @@ int main(int argc, const char *argv[])
 
   std::string detectorModelPath = "path/to/model.onnx", detectorConfig = "none";
   std::string detectorFramework = "onnx", detectorTypeString = "yolov7";
-  std::string objectName = "cube";
-  std::vector<std::string> labels = { "cube" };
+  std::string objectName = "wood_block";
+  std::vector<std::string> labels = { "wood_block" };
   float detectorMeanR = 0.f, detectorMeanG = 0.f, detectorMeanB = 0.f;
   float detectorConfidenceThreshold = 0.65f, detectorNmsThreshold = 0.5f, detectorFilterThreshold = -0.25f;
   float detectorScaleFactor = 0.0039f;

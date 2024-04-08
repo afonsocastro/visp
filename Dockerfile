@@ -1,48 +1,6 @@
 FROM quay.io/toolbx/ubuntu-toolbox:22.04
 
-# Update aptitude with new repo
-RUN apt-get update
-
-# Install packages
-RUN apt-get install -y \
-    sudo \
-    build-essential \
-    cmake \
-    git \
-    net-tools \
-    iputils-ping \
-    # Recommended ViSP 3rd parties
-    libopencv-dev \
-    libx11-dev \
-    liblapack-dev \
-    libeigen3-dev \
-    libdc1394-dev \
-    libv4l-dev \
-    libzbar-dev \
-    # Other optional 3rd parties
-    libpcl-dev \
-    libcoin-dev \
-    libjpeg-turbo8-dev \
-    libpng-dev \
-    libogre-1.9-dev \
-    libois-dev \
-    libdmtx-dev \
-    libgsl-dev \
-    python3-pip
-
-RUN pip install cmake
-
-# # Get visp
-# RUN mkdir visp-ws
-# RUN cd /visp-ws \
-#     && git clone https://github.com/lagadic/visp
-#
-# # Build visp
-# RUN cd /visp-ws \
-#     && mkdir visp-build \
-#     && cd visp-build \
-#     && cmake ../visp \
-#     && make -j$(nproc)
+######## Start by configuring nvidia ########
 
 ######## Clone NVIDIA Repository ########
 
@@ -190,3 +148,49 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ######## Remove NVIDIA Repository ########
 
 RUN rm -rf cuda/
+
+######## Now configure visp ########
+
+# Update aptitude with new repo
+RUN apt-get update
+
+# Install packages
+RUN apt-get install -y \
+    sudo \
+    build-essential \
+    cmake \
+    git \
+    net-tools \
+    iputils-ping \
+    # Recommended ViSP 3rd parties
+    libopencv-dev \
+    libx11-dev \
+    liblapack-dev \
+    libeigen3-dev \
+    libdc1394-dev \
+    libv4l-dev \
+    libzbar-dev \
+    # Other optional 3rd parties
+    libpcl-dev \
+    libcoin-dev \
+    libjpeg-turbo8-dev \
+    libpng-dev \
+    libogre-1.9-dev \
+    libois-dev \
+    libdmtx-dev \
+    libgsl-dev \
+    python3-pip
+
+RUN pip install cmake
+
+# # Get visp
+# RUN mkdir visp-ws
+# RUN cd /visp-ws \
+#     && git clone https://github.com/lagadic/visp
+#
+# # Build visp
+# RUN cd /visp-ws \
+#     && mkdir visp-build \
+#     && cd visp-build \
+#     && cmake ../visp \
+#     && make -j$(nproc)

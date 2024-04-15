@@ -2,8 +2,8 @@
   "numpy_seed": 19,
   "blenderproc_seed": "69",
 
-  "models_path": "./megapose-models",
-  "cc_textures_path": "./cc0",
+  "models_path": "./models",
+  "cc_textures_path": "./materials",
   "camera": {
     "px": 600,
     "py": 600,
@@ -23,11 +23,11 @@
     "simulate_physics": false,
     "max_num_textures": 50,
     "distractors": {
-      "min_count": 20,
-      "max_count": 50,
+      "min_count": 5,
+      "max_count": 30,
       "min_size_rel_scene": 0.05,
       "max_size_rel_scene": 0.1,
-      "custom_distractors": "./megapose-distractors",
+      "custom_distractors": null,
       "custom_distractor_proba": 0.5,
       "displacement_max_amount": 0.0,
       "pbr_noise": 0.5,
@@ -42,8 +42,8 @@
       "max_intensity": 200
     },
     "objects": {
-      "min_count": 2,
-      "max_count": 5,
+      "min_count": 1,
+      "max_count": 2,
       "multiple_occurences": true,
       "scale_noise": 0.2,
       "displacement_max_amount": 0.0,
@@ -54,10 +54,10 @@
   },
   "dataset": {
     "save_path": "./output_blenderproc",
-    "scenes_per_run": 1,
-    "num_scenes": 100,
-    "images_per_scene": 10,
-    "empty_images_per_scene": 2,
+    "scenes_per_run": 4,
+    "num_scenes": 500,
+    "images_per_scene": 49,
+    "empty_images_per_scene": 1,
     "pose": true,
     "depth": false,
     "normals": false,

@@ -84,9 +84,7 @@ def convert_to_visp_frame(aTb):
   Blender: +X = Right, +Y = Up, +Z = Behind
   Same as converting to an OpenCV frame
   '''
-  aTbbis = aTb.copy()
-  aTbbis[1:3] = -aTbbis[1:3]
-  return aTbbis
+  return bproc.math.change_source_coordinate_frame_of_transformation_matrix(aTb, ["X", "-Y", "-Z"])
 
 def convert_points_to_visp_frame(points: np.ndarray):
   '''
@@ -383,6 +381,7 @@ class Generator:
                 hit_count += 1
 
             final_visibility = base_visibility * (hit_count / len(ray_directions))
+            print(final_visibility)
             # Including occlusions, the object is now not visible enough to be detectable
             if final_visibility < min_visibility:
               print(f'Filtered object {object.get_name()}, because of occlusions: {final_visibility}')
@@ -584,7 +583,7 @@ class Generator:
         random_scale = np.random.uniform(-scale_noise, scale_noise) + 1.0
         object.set_scale([random_scale, random_scale, random_scale]) # Uniform scaling
       object.set_location([0.0, 0.0, 0.0])
-      object.persist_transformation_into_mesh(location=False, rotation=False, scale=True)
+      object.persist_transformation_into_mesh()
 
     if displacement_amount > 0.0:
       add_displacement(objects, displacement_amount)
@@ -660,8 +659,7 @@ class Generator:
     )
 
     for object in objects:
-      object.persist_transformation_into_mesh(location=False, rotation=False, scale=True)
-
+      object.persist_transformation_into_mesh()
 
     distractors = self.create_distractors(size)
 
@@ -672,7 +670,8 @@ class Generator:
         object.enable_rigidbody(False, collision_shape='BOX')
 
       bproc.object.simulate_physics_and_fix_final_poses(min_simulation_time=3, max_simulation_time=3.5, check_object_interval=1)
-
+    for object in objects:
+      object.persist_transformation_into_mesh()
     def filter_objects_outside_room(objects: List[bproc.types.MeshObject]) -> List[bproc.types.MeshObject]:
       inside = []
       outside = []
@@ -682,7 +681,7 @@ class Generator:
       for object in outside:
         object.delete()
 
-      print(f'Filtered {len(objects) - len(inside)} objects that were outside the room')
+      print(f'Filtered {len(objects) - len(inside)} objects')
       return inside
 
     objects = filter_objects_outside_room(objects)
@@ -788,3 +787,5 @@ if __name__ == '__main__':
   bproc.init() # Works if you have a GPU
 
   generator.run()
+
+

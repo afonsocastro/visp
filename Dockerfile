@@ -194,3 +194,6 @@ RUN pip install cmake
 #     && cd visp-build \
 #     && cmake ../visp \
 #     && make -j$(nproc)
+
+
+#TODO: instalar miniconda, instalar openCV de source version 4.7, ver basch history. Ha 3 conda envs, mas so o megapose server e necessario

@@ -163,7 +163,7 @@ RUN apt-get install -y \
     net-tools \
     iputils-ping \
     # Recommended ViSP 3rd parties
-    libopencv-dev \
+    # libopencv-dev \
     libx11-dev \
     liblapack-dev \
     libeigen3-dev \
@@ -179,9 +179,55 @@ RUN apt-get install -y \
     libois-dev \
     libdmtx-dev \
     libgsl-dev \
-    python3-pip
+    python3-pip \
+    libgtk-3-dev \
+    cmake-curses-gui \
+    locate
 
+# Install OpenCV 4.7 from source
+RUN export GPU_CAPABILITIES=$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader)
+
+RUN mkdir -p /opt/visp_ws/3rdparty
+WORKDIR /opt/visp_ws/3rdparty
+
+RUN git clone --branch 4.7.0 https://github.com/opencv/opencv_contrib
+RUN git clone --branch 4.7.0 https://github.com/opencv/opencv
+
+RUN mkdir -p /opt/visp_ws/3rdparty/opencv/build
+WORKDIR /opt/visp_ws/3rdparty/opencv/build
+
+RUN cmake .. \
+  -DCMAKE_BUILD_TYPE=RELEASE \
+  -DCMAKE_INSTALL_PREFIX=/usr \
+  -DCMAKE_INSTALL_LIBDIR=lib \
+  -DWITH_CUDA=ON \
+  -DWITH_CUDNN=ON \
+  -DOPENCV_DNN_CUDA=ON \
+  -DENABLE_FAST_MATH=1 \
+  -DCUDA_FAST_MATH=1 \
+  -DCUDA_ARCH_BIN=${GPU_CAPABILITIES} \
+  -DWITH_CUBLAS=1 \
+  -DOPENCV_EXTRA_MODULES_PATH=/opt/visp_ws/3rdparty/opencv_contrib/modules \
+  -DBUILD_PERF_TESTS=Off \
+  -DBUILD_TESTS=Off \
+  -DBUILD_EXAMPLES=Off \
+  -DBUILD_opencv_apps=Off \
+  -DBUILD_opencv_java_bindings_generator=Off \
+  -DBUILD_opencv_js=Off
+RUN make -j4
+RUN make install
+
+# Install miniconda3
+RUN mkdir -p /opt/miniconda3
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda3/miniconda.sh
+RUN bash /opt/miniconda3/miniconda.sh -b -u -p /opt/miniconda3
+RUN rm -rf /opt/miniconda3/miniconda.sh
+
+# Install pip dependencies
 RUN pip install cmake
+
+# After creating the container, run:
+# ~/miniconda3/bin/conda init bash
 
 # # Get visp
 # RUN mkdir visp-ws
@@ -196,4 +242,5 @@ RUN pip install cmake
 #     && make -j$(nproc)
 
 
-#TODO: instalar miniconda, instalar openCV de source version 4.7, ver basch history. Ha 3 conda envs, mas so o megapose server e necessario
+#TODO:  Colocar aqui também a criacao de 3 conda envs:
+# visp_megapose_server para testar (geral) + yolov7 e blenderproc para treinar (development).

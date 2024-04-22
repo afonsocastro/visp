@@ -227,7 +227,7 @@ RUN rm -rf /opt/miniconda3/miniconda.sh
 RUN pip install cmake
 
 # After creating the container, run:
-# ~/miniconda3/bin/conda init bash
+# /opt/miniconda3/bin/conda init bash
 
 # # Get visp
 # RUN mkdir visp-ws

@@ -1,4 +1,4 @@
-name: megapose
+name: visp_megapose_server
 channels:
    - conda-forge
    - pytorch

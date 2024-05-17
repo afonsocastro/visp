@@ -3,7 +3,8 @@
   "width": 1280,
   "video-device": "0",
   "object": "wood_block",
-  "detectionMethod": "click",
+//  "detectionMethod": "click",
+  "detectionMethod": "dnn",
   "reinitThreshold": 0.5,
   "camera": {
     "model": "perspectiveWithoutDistortion",
@@ -13,12 +14,12 @@
     "v0": 244.95083618164063
   },
   "detector": {
-    "model-path": "/path/to/cube/cube_detector.onnx",
+    "model-path": "~/visp-ws/visp-build/best_mixed_4.onnx",
     "config": "none",
     "type": "yolov7",
     "framework": "onnx",
     "labels": [
-      "cube"
+      "wood_block"
     ],
     "mean":{
       "red": 0,

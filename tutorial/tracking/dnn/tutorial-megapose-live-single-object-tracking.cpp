@@ -10,7 +10,7 @@
   defined(VISP_HAVE_THREADS)
 
 #include <optional>
-
+#include <chrono>
 #include <visp3/core/vpIoTools.h>
 #include <visp3/detection/vpDetectorDNNOpenCV.h>
 #include <visp3/gui/vpDisplayGDI.h>
@@ -25,7 +25,9 @@
 #include <opencv2/videoio.hpp>
 
 
+using namespace std::chrono;
 using json = nlohmann::json; //! json namespace shortcut
+
 
 /*
  * Interpolate two vpColors. Linear interpolation between each components (R, G, B)
@@ -330,6 +332,10 @@ int main(int argc, const char *argv[])
   std::vector<double> frameTimes;
 
   double megaposeStartTime = 0.0;
+  auto lost = high_resolution_clock::now();
+  auto start_YOLO = high_resolution_clock::now();
+  auto found = high_resolution_clock::now();
+  auto mega_pose_init = high_resolution_clock::now();
 
   //! [Acquisition]
   while (true) {
@@ -364,6 +370,8 @@ int main(int argc, const char *argv[])
 
       if (megaposeEstimate.score < reinitThreshold) { // If confidence is low, require a reinitialisation with 2D detection
         initialized = false;
+        std::cout << "\n !! LOST :( !!\n" << std::endl;
+        lost = high_resolution_clock::now();
       }
     }
     //! [Check megapose]
@@ -375,6 +383,8 @@ int main(int argc, const char *argv[])
 #if (VISP_HAVE_OPENCV_VERSION >= 0x030403) && defined(HAVE_OPENCV_DNN) && \
     ((__cplusplus >= 201703L) || (defined(_MSVC_LANG) && (_MSVC_LANG >= 201703L)))
         if (detectionMethod == DetectionMethod::DNN) {
+        std::cout << "\n ... Start YOLO v7 ...\n" << std::endl;
+        start_YOLO = high_resolution_clock::now();
           detection = detectObjectForInitMegaposeDnn(
             dnn, frame, objectName, initialized ? std::optional(megaposeEstimate) : std::nullopt);
         }
@@ -384,6 +394,8 @@ int main(int argc, const char *argv[])
         }
 
         if (detection) {
+          std::cout << "\n !! FOUND :D !!\n" << std::endl;
+          found = high_resolution_clock::now();
           initialized = true;
           lastDetection = *detection;
           trackerFuture = megaposeTracker.init(I, lastDetection);
@@ -392,6 +404,14 @@ int main(int argc, const char *argv[])
         }
       }
       else {
+        std::cout << "\n !! **** MegaPose take over ***** !!\n" << std::endl;
+        mega_pose_init = high_resolution_clock::now();
+        auto duration_found_megapose = duration_cast<microseconds>(mega_pose_init - found);
+        auto duration_lost_yolo = duration_cast<microseconds>(start_YOLO - lost);
+        auto duration_yolo = duration_cast<microseconds>(found - start_YOLO );
+        std::cout << "\n ___ Time Metrics REPORT___" << std::endl;
+        std::cout << "Time between Lost and YOLO start: " << std::endl;
+        std::cout << + duration_lost_yolo.count() << std::endl;
         trackerFuture = megaposeTracker.track(I);
         callMegapose = false;
         megaposeStartTime = vpTime::measureTimeMs();

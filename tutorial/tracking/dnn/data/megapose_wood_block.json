@@ -1,20 +1,19 @@
 {
-  "height": 720,
-  "width": 1280,
+  "height": 640,
+  "width": 640,
   "video-device": "0",
   "object": "wood_block",
-//  "detectionMethod": "click",
   "detectionMethod": "dnn",
   "reinitThreshold": 0.5,
   "camera": {
     "model": "perspectiveWithoutDistortion",
-    "px": 605.146728515625,
-    "py": 604.79150390625,
-    "u0": 325.53253173828125,
-    "v0": 244.95083618164063
+    "px": 605.44236,
+    "py": 606.44959,
+    "u0": 321.33476,
+    "v0": 238.20179
   },
   "detector": {
-    "model-path": "~/visp-ws/visp-build/best_mixed_4.onnx",
+    "model-path": "/home/afonsocastro/visp-distrobox/visp-ws/visp-build/best.onnx",
     "config": "none",
     "type": "yolov7",
     "framework": "onnx",

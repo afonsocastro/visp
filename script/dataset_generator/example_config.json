@@ -54,9 +54,9 @@
   },
   "dataset": {
     "save_path": "./output_blenderproc",
-    "scenes_per_run": 4,
-    "num_scenes": 300,
-    "images_per_scene": 19,
+    "scenes_per_run": 50,
+    "num_scenes": 100,
+    "images_per_scene": 49,
     "empty_images_per_scene": 1,
     "pose": true,
     "depth": false,

@@ -7,6 +7,7 @@ find_package(VISP REQUIRED visp_core visp_detection visp_dnn_tracker visp_io vis
 # set the list of source files
 set(tutorial_cpp
   tutorial-megapose-live-single-object-tracking.cpp
+  server_example.cpp
 )
 
 foreach(cpp ${tutorial_cpp})
@@ -18,3 +19,4 @@ endforeach()
 
 # Copy the data files
 visp_copy_dir(tutorial-megapose-live-single-object-tracking.cpp "${CMAKE_CURRENT_SOURCE_DIR}" data)
+visp_copy_dir(server_example.cpp "${CMAKE_CURRENT_SOURCE_DIR}" data)

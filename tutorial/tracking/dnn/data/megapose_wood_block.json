@@ -3,7 +3,7 @@
   "width": 640,
   "video-device": "0",
   "object": "wood_block",
-  "detectionMethod": "dnn",
+  "detectionMethod": "click",
   "reinitThreshold": 0.5,
   "camera": {
     "model": "perspectiveWithoutDistortion",
